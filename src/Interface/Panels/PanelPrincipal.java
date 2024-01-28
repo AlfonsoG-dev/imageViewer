@@ -49,8 +49,8 @@ public class PanelPrincipal {
 
         return pPrincipal;
     }
-    private void resiseButtonHandler(JButton resiseButton) {
-        resiseButton.addActionListener(new ActionListener() {
+    private void resizeButtonHandler(JButton resizeButton) {
+        resizeButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             }
         });
@@ -59,9 +59,9 @@ public class PanelPrincipal {
         JPanel optionsPane = new JPanel();
         optionsPane.setLayout(new FlowLayout());
 
-        JButton resiseButton = new JButton("resise");
-        resiseButtonHandler(resiseButton);
-        optionsPane.add(resiseButton);
+        JButton resizeButton = new JButton("resize");
+        resizeButtonHandler(resizeButton);
+        optionsPane.add(resizeButton);
 
         optionsPane.add(new JButton("draw"));
         optionsPane.add(new JButton("undo"));
