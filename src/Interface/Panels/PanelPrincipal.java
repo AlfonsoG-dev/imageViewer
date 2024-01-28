@@ -2,7 +2,8 @@ package Interface.Panels;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
@@ -16,49 +17,52 @@ public class PanelPrincipal {
     private JPanel pPrincipal;
     private ImageIcon myImage;
     private JLabel imageLabel;
-
-    public PanelPrincipal() {
-        createUI(1200, 900);
+    public PanelPrincipal(int width, int height) {
+        createUI(width, height);
     }
-    private ImageIcon loadImage() {
+    public ImageIcon loadImage(int width, int height) {
         myImage = null;
         try {
             String imagePath = ".\\docs\\astronaut-guardian.jpg";
             ImageIcon toIcon = new ImageIcon(imagePath);
             Image original = toIcon.getImage();
-            int width = (int)(myFrame.getWidth()-200);
-            int height = (int)(myFrame.getHeight()-200);
-            Image newSize = original.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            int imageWidth = width;
+            int imageHeight = height;
+            Image newSize = original.getScaledInstance(imageWidth, imageHeight, Image.SCALE_SMOOTH);
             myImage = new ImageIcon(newSize);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return myImage;
     }
-    private JPanel setPrincipalContent() {
+    public JPanel setPrincipalContent(int width, int height) {
         pPrincipal = new JPanel();
-        pPrincipal.setLayout(new GridLayout(1, 1));
+        pPrincipal.setLayout(new FlowLayout());
         
-        if(loadImage() == null) {
+        if(loadImage(width, height) == null) {
             imageLabel = new JLabel("cannot load image");
         } else {
-            imageLabel = new JLabel(loadImage());
+            imageLabel = new JLabel(loadImage(width, height));
         }
 
         pPrincipal.add(imageLabel);
 
         return pPrincipal;
     }
-    private JPanel setHeaderContent() {
-        JPanel headerPane = new JPanel();
-        headerPane.setLayout(new GridLayout(1, 1));
-        headerPane.add(new JLabel("Image: "));
-        return headerPane;
+    private void resiseButtonHandler(JButton resiseButton) {
+        resiseButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            }
+        });
     }
     private JPanel setOptionsContent() {
         JPanel optionsPane = new JPanel();
         optionsPane.setLayout(new FlowLayout());
-        optionsPane.add(new JButton("rezise"));
+
+        JButton resiseButton = new JButton("resise");
+        resiseButtonHandler(resiseButton);
+        optionsPane.add(resiseButton);
+
         optionsPane.add(new JButton("draw"));
         optionsPane.add(new JButton("undo"));
 
@@ -69,8 +73,7 @@ public class PanelPrincipal {
         myFrame.setLayout(new BorderLayout());
         myFrame.setSize(width, height);
 
-        myFrame.add(setHeaderContent(), BorderLayout.NORTH);
-        myFrame.add(setPrincipalContent(), BorderLayout.CENTER);
+        myFrame.add(setPrincipalContent(width - 200, height - 200), BorderLayout.CENTER);
         myFrame.add(setOptionsContent(), BorderLayout.SOUTH);
 
         myFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
