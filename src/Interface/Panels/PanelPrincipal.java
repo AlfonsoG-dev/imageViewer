@@ -1,11 +1,12 @@
 package Interface.Panels;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.net.http.HttpResponse.BodyHandler;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -54,6 +55,15 @@ public class PanelPrincipal {
         headerPane.add(new JLabel("Image: "));
         return headerPane;
     }
+    private JPanel setOptionsContent() {
+        JPanel optionsPane = new JPanel();
+        optionsPane.setLayout(new FlowLayout());
+        optionsPane.add(new JButton("rezise"));
+        optionsPane.add(new JButton("draw"));
+        optionsPane.add(new JButton("undo"));
+
+        return optionsPane;
+    }
     public void createUI(int width, int height) {
         myFrame = new JFrame("Image Viewer");
         myFrame.setLayout(new BorderLayout());
@@ -61,6 +71,7 @@ public class PanelPrincipal {
 
         myFrame.add(setHeaderContent(), BorderLayout.NORTH);
         myFrame.add(setPrincipalContent(), BorderLayout.CENTER);
+        myFrame.add(setOptionsContent(), BorderLayout.SOUTH);
 
         myFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         myFrame.setVisible(true);

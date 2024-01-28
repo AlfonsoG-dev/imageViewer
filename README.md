@@ -6,7 +6,7 @@
 
 # TODO'S
 >- structural TODO'S:
-- [ ] create the UI structure.
+- [x] create the UI structure.
 - [ ] create the logic model.
 - [ ] create classes model.
 >- functions and methods TODO'S:
