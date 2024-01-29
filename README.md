@@ -2,6 +2,9 @@
 - GUI APP for simple edition operations for images in java.
 - created using java *swing*
 
+# Dependencies
+- [mouse_drawing](http://www.java2s.com/Tutorials/Java/Graphics_How_to/Screen/Screen_shoot_capture_and_select_an_area_to_cut_with_mouse.htm)
+
 # Features
 
 # TODO'S
