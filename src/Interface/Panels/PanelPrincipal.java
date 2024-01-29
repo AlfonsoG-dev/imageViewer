@@ -14,10 +14,15 @@ import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
+import java.io.IOException;
+import java.io.File;
+
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class PanelPrincipal {
@@ -26,6 +31,8 @@ public class PanelPrincipal {
     private ImageIcon myImage;
     private JLabel imageLabel;
     private Rectangle captureRect;
+    private BufferedImage bufferedImage;
+    private Point start, end;
     public PanelPrincipal(int width, int height) {
         createUI(width, height);
     }
@@ -37,7 +44,11 @@ public class PanelPrincipal {
             Image original = toIcon.getImage();
             int imageWidth = myFrame.getWidth()-200;
             int imageHeight = myFrame.getHeight()-100;
-            Image newSize = original.getScaledInstance(imageWidth, imageHeight, Image.SCALE_SMOOTH);
+            Image newSize = original.getScaledInstance(
+                    imageWidth,
+                    imageHeight,
+                    Image.SCALE_SMOOTH
+            );
             myImage = new ImageIcon(newSize);
         } catch (Exception e) {
             e.printStackTrace();
@@ -49,14 +60,17 @@ public class PanelPrincipal {
         pPrincipal.setLayout(new FlowLayout());
         
         Image origen = loadImage().getImage();
-        BufferedImage bufferedImage = new BufferedImage(origen.getWidth(null), origen.getHeight(null), BufferedImage.SCALE_SMOOTH);
+        bufferedImage = new BufferedImage(
+                origen.getWidth(null),
+                origen.getHeight(null),
+                BufferedImage.SCALE_SMOOTH
+        );
         imageLabel = new JLabel(new ImageIcon(bufferedImage));
 
         repaint(origen, bufferedImage);
         imageLabel.repaint();
 
         imageLabel.addMouseMotionListener(new MouseMotionAdapter() {
-            Point start = new Point();
             @Override
             public void mouseMoved(MouseEvent me) {
                 start = me.getPoint();
@@ -65,9 +79,11 @@ public class PanelPrincipal {
             }
             @Override
             public void mouseDragged(MouseEvent me) {
-                Point end = me.getPoint();
-                captureRect = new Rectangle(start, new Dimension(end.x - start.x, end.y
-                            - start.y));
+                end = me.getPoint();
+                captureRect = new Rectangle(
+                        start,
+                        new Dimension(end.x - start.x, end.y - start.y)
+                );
                 repaint(origen, bufferedImage);
                 imageLabel.repaint();
             }
@@ -89,10 +105,30 @@ public class PanelPrincipal {
         g.fill(captureRect);
         g.dispose();
     }
+    private BufferedImage crop() throws IOException {
+
+        int targetWidth = captureRect.width;
+        int targetHeight = captureRect.height;
+        // Crop
+        BufferedImage croppedImage = bufferedImage.getSubimage(
+                captureRect.x, 
+                captureRect.y,
+                targetWidth, // widht
+                targetHeight // height
+                );
+        return croppedImage;
+    }
     private void resizeButtonHandler(JButton resizeButton) {
         resizeButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                System.out.println(captureRect.height + "::" + captureRect.width);
+                try {
+                    int options = JOptionPane.showConfirmDialog(myFrame, "Save the image?", "Save", JOptionPane.YES_NO_OPTION);
+                    if(options == JOptionPane.YES_OPTION) {
+                        ImageIO.write(crop(), "jpg", new File(".\\docs\\output.jpg"));
+                    }
+                } catch(Exception er) {
+                    er.printStackTrace();
+                }
             }
         });
     }

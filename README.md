@@ -4,6 +4,7 @@
 
 # Dependencies
 - [mouse_drawing](http://www.java2s.com/Tutorials/Java/Graphics_How_to/Screen/Screen_shoot_capture_and_select_an_area_to_cut_with_mouse.htm)
+- [cropping_an_image](https://copyprogramming.com/howto/how-do-i-crop-an-image-in-java)
 
 # Features
 
@@ -15,8 +16,8 @@
 >- functions and methods TODO'S:
 - [ ] select image from *JFileChooser*.
 - [ ] drag and drop.
-- [ ] make a rectangle selection using mouse.
-- [ ] cut the image to the size of selection.
+- [x] make a rectangle selection using mouse.
+- [x] cut the image to the size of selection.
 - [ ] paint on empty board.
 - [ ] paint the image using mouse.
 - [ ] select a brush thickness and brush color in orden to paint the image.
