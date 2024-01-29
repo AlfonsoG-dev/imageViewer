@@ -7,6 +7,8 @@
 - [cropping_an_image](https://copyprogramming.com/howto/how-do-i-crop-an-image-in-java)
 
 # Features
+- [x] make a rectangle selection using mouse.
+- [x] cut the image to the size of selection.
 
 # TODO'S
 >- structural TODO'S:
@@ -16,11 +18,9 @@
 >- functions and methods TODO'S:
 - [ ] select image from *JFileChooser*.
 - [ ] drag and drop.
-- [x] make a rectangle selection using mouse.
-- [x] cut the image to the size of selection.
 - [ ] paint on empty board.
-- [ ] paint the image using mouse.
-- [ ] select a brush thickness and brush color in orden to paint the image.
+- [ ] paint to the image using mouse.
+- [ ] select a brush, set its thickness and color.
 
 # Disclaimer
 - this project is for educational purposes.
