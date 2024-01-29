@@ -1,6 +1,7 @@
 package Interface.Panels;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -33,18 +34,18 @@ public class PanelPrincipal {
     private Rectangle captureRect;
     private BufferedImage bufferedImage;
     private Point start, end;
+    private String imagePath;
     public PanelPrincipal(int width, int height) {
+        imagePath = ".\\docs\\astronaut-guardian.jpg";
         createUI(width, height);
     }
     public ImageIcon loadImage() {
         myImage = null;
         try {
-            String imagePath = ".\\docs\\astronaut-guardian.jpg";
-            ImageIcon toIcon = new ImageIcon(imagePath);
-            Image original = toIcon.getImage();
+            BufferedImage readImage = ImageIO.read(new File(imagePath));
             int imageWidth = myFrame.getWidth()-200;
             int imageHeight = myFrame.getHeight()-100;
-            Image newSize = original.getScaledInstance(
+            Image newSize = readImage.getScaledInstance(
                     imageWidth,
                     imageHeight,
                     Image.SCALE_SMOOTH
@@ -55,7 +56,7 @@ public class PanelPrincipal {
         }
         return myImage;
     }
-    public void repaint(Image orig, BufferedImage copy) {
+    public void drawShape(Image orig, BufferedImage copy) {
         Graphics2D g = copy.createGraphics();
         g.drawImage(orig, 0, 0, null);
         g.setColor(Color.BLACK);
@@ -67,26 +68,15 @@ public class PanelPrincipal {
         g.fill(captureRect);
         g.dispose();
     }
-    public JPanel setPrincipalContent() {
-        pPrincipal = new JPanel();
-        pPrincipal.setLayout(new FlowLayout());
-        
-        Image origen = loadImage().getImage();
-        bufferedImage = new BufferedImage(
-                origen.getWidth(null),
-                origen.getHeight(null),
-                BufferedImage.SCALE_SMOOTH
-        );
-        imageLabel = new JLabel(new ImageIcon(bufferedImage));
-
-        repaint(origen, bufferedImage);
+    private void createMouseSelection(Image origen) {
+        drawShape(origen, bufferedImage);
         imageLabel.repaint();
 
         imageLabel.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent me) {
                 start = me.getPoint();
-                repaint(origen, bufferedImage);
+                drawShape(origen, bufferedImage);
                 imageLabel.repaint();
             }
             @Override
@@ -95,12 +85,30 @@ public class PanelPrincipal {
                 captureRect = new Rectangle(
                         start,
                         new Dimension(end.x - start.x, end.y - start.y)
-                );
-                repaint(origen, bufferedImage);
+                        );
+                drawShape(origen, bufferedImage);
                 imageLabel.repaint();
             }
         });
 
+    }
+    public JPanel setPrincipalContent() {
+        pPrincipal = new JPanel();
+        pPrincipal.setLayout(new GridLayout(1,1));
+        pPrincipal.setPreferredSize(new Dimension(
+                    myFrame.getWidth() - 100 ,
+                    myFrame.getHeight() - 100
+             )
+        );
+        
+        Image origen = loadImage().getImage();
+        bufferedImage = new BufferedImage(
+                origen.getWidth(null),
+                origen.getHeight(null),
+                BufferedImage.SCALE_SMOOTH
+        );
+        imageLabel = new JLabel(new ImageIcon(bufferedImage));
+        createMouseSelection(origen);
         pPrincipal.add(imageLabel);
 
         return pPrincipal;
@@ -113,8 +121,8 @@ public class PanelPrincipal {
         BufferedImage croppedImage = bufferedImage.getSubimage(
                 captureRect.x, 
                 captureRect.y,
-                targetWidth, // widht
-                targetHeight // height
+                targetWidth,
+                targetHeight
         );
         return croppedImage;
     }
@@ -144,6 +152,12 @@ public class PanelPrincipal {
             }
         });
     }
+    private void drawButtonHandler(JButton drawButton) {
+        drawButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            }
+        });
+    }
     private JPanel setOptionsContent() {
         JPanel optionsPane = new JPanel();
         optionsPane.setLayout(new FlowLayout());
@@ -152,7 +166,9 @@ public class PanelPrincipal {
         cutButtonHandler(cutButton);
         optionsPane.add(cutButton);
 
-        optionsPane.add(new JButton("draw"));
+        JButton drawButton = new JButton("draw");
+        drawButtonHandler(drawButton);
+        optionsPane.add(drawButton);
         optionsPane.add(new JButton("undo"));
 
         return optionsPane;
