@@ -5,6 +5,7 @@
 # Dependencies
 - [mouse_drawing](http://www.java2s.com/Tutorials/Java/Graphics_How_to/Screen/Screen_shoot_capture_and_select_an_area_to_cut_with_mouse.htm)
 - [cropping_an_image](https://copyprogramming.com/howto/how-do-i-crop-an-image-in-java)
+- [automatic_scaling_images](https://www.codejava.net/java-se/graphics/drawing-an-image-with-automatic-scaling)
 
 # Features
 - [x] make a rectangle selection using mouse.
@@ -16,6 +17,7 @@
 - [ ] create the logic model.
 - [ ] create classes model.
 >- functions and methods TODO'S:
+- [ ] re-size the image when the window or JFrame is re-sizing
 - [ ] select image from *JFileChooser*.
 - [ ] drag and drop.
 - [ ] paint on empty board.
