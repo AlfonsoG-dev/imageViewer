@@ -34,20 +34,24 @@ public class PanelPrincipal {
     private Rectangle captureRect;
     private BufferedImage bufferedImage;
     private int imageWidth, imageHeight;
-    private boolean isDrawing = false;
     private Image origen;
     private Point start, end;
     private String imagePath;
     public PanelPrincipal(int width, int height) {
         imagePath = ".\\docs\\astronaut-guardian.jpg";
+        //imagePath = "D:/Default/Proyectos/Cursos/Curso-java/Tutorials/Joogle/docs/expected_output_lm.png";
         createUI(width, height);
     }
     public ImageIcon loadImage() {
         myImage = null;
         try {
             BufferedImage readImage = ImageIO.read(new File(imagePath));
-            imageWidth = myFrame.getWidth()-200;
-            imageHeight = myFrame.getHeight()-100;
+            imageWidth = readImage.getWidth() > myFrame.getWidth() ?
+                myFrame.getWidth()-200 : readImage.getWidth();
+
+            imageHeight = readImage.getHeight() > myFrame.getHeight() ? 
+                myFrame.getHeight()-100 : readImage.getHeight();
+
             Image newSize = readImage.getScaledInstance(
                     imageWidth,
                     imageHeight,
@@ -106,11 +110,6 @@ public class PanelPrincipal {
     public JPanel setPrincipalContent() {
         pPrincipal = new JPanel();
         pPrincipal.setLayout(new GridLayout(1,1));
-        pPrincipal.setPreferredSize(new Dimension(
-                    myFrame.getWidth() - 100 ,
-                    myFrame.getHeight() - 100
-             )
-        );
         
         imageLabel = new JLabel(new ImageIcon(bufferedImage));
         drawShape();
