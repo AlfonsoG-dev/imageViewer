@@ -33,6 +33,9 @@ public class PanelPrincipal {
     private JLabel imageLabel;
     private Rectangle captureRect;
     private BufferedImage bufferedImage;
+    private int imageWidth, imageHeight;
+    private boolean isDrawing = false;
+    private Image origen;
     private Point start, end;
     private String imagePath;
     public PanelPrincipal(int width, int height) {
@@ -43,8 +46,8 @@ public class PanelPrincipal {
         myImage = null;
         try {
             BufferedImage readImage = ImageIO.read(new File(imagePath));
-            int imageWidth = myFrame.getWidth()-200;
-            int imageHeight = myFrame.getHeight()-100;
+            imageWidth = myFrame.getWidth()-200;
+            imageHeight = myFrame.getHeight()-100;
             Image newSize = readImage.getScaledInstance(
                     imageWidth,
                     imageHeight,
@@ -56,10 +59,10 @@ public class PanelPrincipal {
         }
         return myImage;
     }
-    public void drawShape(Image orig, BufferedImage copy) {
-        Graphics2D g = copy.createGraphics();
-        g.drawImage(orig, 0, 0, null);
-        g.setColor(Color.BLACK);
+    public void drawShape() {
+        Graphics2D g = bufferedImage.createGraphics();
+        g.drawImage(origen, 0, 0, null);
+        g.setColor(Color.RED);
         if (captureRect == null) {
             return;
         }
@@ -68,15 +71,15 @@ public class PanelPrincipal {
         g.fill(captureRect);
         g.dispose();
     }
-    private void createMouseSelection(Image origen) {
-        drawShape(origen, bufferedImage);
+    private void createMouseSelection() {
+        drawShape();
         imageLabel.repaint();
 
         imageLabel.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent me) {
                 start = me.getPoint();
-                drawShape(origen, bufferedImage);
+                drawShape();
                 imageLabel.repaint();
             }
             @Override
@@ -85,12 +88,20 @@ public class PanelPrincipal {
                 captureRect = new Rectangle(
                         start,
                         new Dimension(end.x - start.x, end.y - start.y)
-                        );
-                drawShape(origen, bufferedImage);
+                );
+                drawShape();
                 imageLabel.repaint();
             }
         });
 
+    }
+    private void setImageState() {
+        origen = loadImage().getImage();
+        bufferedImage = new BufferedImage(
+                imageWidth,
+                imageHeight,
+                BufferedImage.SCALE_SMOOTH
+        );
     }
     public JPanel setPrincipalContent() {
         pPrincipal = new JPanel();
@@ -101,14 +112,8 @@ public class PanelPrincipal {
              )
         );
         
-        Image origen = loadImage().getImage();
-        bufferedImage = new BufferedImage(
-                origen.getWidth(null),
-                origen.getHeight(null),
-                BufferedImage.SCALE_SMOOTH
-        );
         imageLabel = new JLabel(new ImageIcon(bufferedImage));
-        createMouseSelection(origen);
+        drawShape();
         pPrincipal.add(imageLabel);
 
         return pPrincipal;
@@ -155,6 +160,15 @@ public class PanelPrincipal {
     private void drawButtonHandler(JButton drawButton) {
         drawButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                createMouseSelection();
+            }
+        });
+    }
+
+    private void undoButtonHandler(JButton undoButton) {
+        undoButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                captureRect = null;
             }
         });
     }
@@ -169,7 +183,10 @@ public class PanelPrincipal {
         JButton drawButton = new JButton("draw");
         drawButtonHandler(drawButton);
         optionsPane.add(drawButton);
-        optionsPane.add(new JButton("undo"));
+
+        JButton undoButton = new JButton("undo");
+        undoButtonHandler(undoButton);
+        optionsPane.add(undoButton);
 
         return optionsPane;
     }
@@ -177,6 +194,8 @@ public class PanelPrincipal {
         myFrame = new JFrame("Image Viewer");
         myFrame.setLayout(new BorderLayout());
         myFrame.setSize(width, height);
+
+        setImageState();
 
         myFrame.add(setPrincipalContent(), BorderLayout.CENTER);
         myFrame.add(setOptionsContent(), BorderLayout.SOUTH);
