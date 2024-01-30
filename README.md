@@ -14,8 +14,8 @@
 # TODO'S
 >- structural TODO'S:
 - [x] create the UI structure.
-- [ ] create the logic model.
-- [ ] create classes model.
+- [x] create the logic model.
+- [x] create classes model.
 >- functions and methods TODO'S:
 - [ ] re-size the image when the window or JFrame is re-sizing
 - [ ] select image from *JFileChooser*.
