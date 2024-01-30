@@ -42,7 +42,7 @@ public class PanelPrincipal {
         //imagePath = "D:/Default/Proyectos/Cursos/Curso-java/Tutorials/Joogle/docs/expected_output_lm.png";
         createUI(width, height);
     }
-    public ImageIcon loadImage() {
+    private ImageIcon loadImage() {
         myImage = null;
         try {
             BufferedImage readImage = ImageIO.read(new File(imagePath));
@@ -63,7 +63,7 @@ public class PanelPrincipal {
         }
         return myImage;
     }
-    public void drawShape() {
+    private void drawShape() {
         Graphics2D g = bufferedImage.createGraphics();
         g.drawImage(origen, 0, 0, null);
         g.setColor(Color.RED);
@@ -107,7 +107,7 @@ public class PanelPrincipal {
                 BufferedImage.SCALE_SMOOTH
         );
     }
-    public JPanel setPrincipalContent() {
+    private JPanel setPrincipalContent() {
         pPrincipal = new JPanel();
         pPrincipal.setLayout(new GridLayout(1,1));
         
