@@ -37,9 +37,8 @@ public class PanelPrincipal {
     private Image origen;
     private Point start, end;
     private String imagePath;
-    public PanelPrincipal(int width, int height) {
-        imagePath = ".\\docs\\astronaut-guardian.jpg";
-        //imagePath = "D:/Default/Proyectos/Cursos/Curso-java/Tutorials/Joogle/docs/expected_output_lm.png";
+    public PanelPrincipal(int width, int height, String imageSelected) {
+        imagePath = imageSelected;
         createUI(width, height);
     }
     private ImageIcon loadImage() {
@@ -134,7 +133,6 @@ public class PanelPrincipal {
         cutButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
-                    // TODO: change the save image to a JFileChooser
                     int options = JOptionPane.showConfirmDialog(
                             myFrame,
                             "Save the image?",

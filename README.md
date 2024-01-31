@@ -19,6 +19,7 @@
 >- functions and methods TODO'S:
 - [ ] re-size the image when the window or JFrame is re-sizing
 - [ ] select image from *JFileChooser*.
+>- currently supported only *".jpg & .png"*
 - [ ] drag and drop.
 - [ ] paint on empty board.
 - [ ] paint to the image using mouse.
