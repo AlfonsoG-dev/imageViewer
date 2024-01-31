@@ -90,7 +90,10 @@ public class PanelPrincipal {
                 end = me.getPoint();
                 captureRect = new Rectangle(
                         start,
-                        new Dimension(end.x - start.x, end.y - start.y)
+                        new Dimension(
+                            end.x - start.x,
+                            end.y - start.y
+                        )
                 );
                 drawShape();
                 imageLabel.repaint();
