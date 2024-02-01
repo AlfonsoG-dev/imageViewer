@@ -5,6 +5,8 @@ import java.awt.GridLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -28,6 +30,7 @@ import javax.swing.JPanel;
 
 public class PanelPrincipal {
     private JFrame myFrame;
+    private JFrame mainFrame;
     private JPanel pPrincipal;
     private ImageIcon myImage;
     private JLabel imageLabel;
@@ -37,8 +40,9 @@ public class PanelPrincipal {
     private Image origen;
     private Point start, end;
     private String imagePath;
-    public PanelPrincipal(int width, int height, String imageSelected) {
+    public PanelPrincipal(JFrame nMainFrame, int width, int height, String imageSelected) {
         imagePath = imageSelected;
+        mainFrame = nMainFrame;
         createUI(width, height);
     }
     private ImageIcon loadImage() {
@@ -194,6 +198,22 @@ public class PanelPrincipal {
         myFrame = new JFrame("Image Viewer");
         myFrame.setLayout(new BorderLayout());
         myFrame.setSize(width, height);
+
+        myFrame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+                int option = JOptionPane.showConfirmDialog(
+                        myFrame,
+                        "Are you sure?",
+                        "Closing",
+                        JOptionPane.YES_OPTION
+                );
+                if(option == JOptionPane.YES_OPTION) {
+                    System.exit(0);
+                } else {
+                    myFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                }
+            }
+        });
 
         setImageState();
 
