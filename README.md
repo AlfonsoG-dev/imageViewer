@@ -18,7 +18,7 @@
 - [x] create classes model.
 >- functions and methods TODO'S:
 - [ ] re-size the image when the window or JFrame is re-sizing
-- [ ] select image from *JFileChooser*.
+- [x] select image from *JFileChooser*.
 >- currently supported only *".jpg & .png"*
 - [ ] drag and drop.
 - [ ] paint on empty board.

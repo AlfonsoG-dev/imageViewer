@@ -30,7 +30,6 @@ import javax.swing.JPanel;
 
 public class PanelPrincipal {
     private JFrame myFrame;
-    private JFrame mainFrame;
     private JPanel pPrincipal;
     private ImageIcon myImage;
     private JLabel imageLabel;
@@ -40,9 +39,8 @@ public class PanelPrincipal {
     private Image origen;
     private Point start, end;
     private String imagePath;
-    public PanelPrincipal(JFrame nMainFrame, int width, int height, String imageSelected) {
+    public PanelPrincipal(int width, int height, String imageSelected) {
         imagePath = imageSelected;
-        mainFrame = nMainFrame;
         createUI(width, height);
     }
     private ImageIcon loadImage() {
@@ -176,6 +174,22 @@ public class PanelPrincipal {
             }
         });
     }
+    private void cancelButtonHandler(JButton cancelButton) {
+        cancelButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int option = JOptionPane.showConfirmDialog(
+                        myFrame, 
+                        "Are you sure?",
+                        "Cancel",
+                        JOptionPane.YES_OPTION
+                );
+                if(option == JOptionPane.YES_OPTION) {
+                    myFrame.dispose();
+                    new SelectionPanel();
+                }
+            }
+        });
+    }
     private JPanel setOptionsContent() {
         JPanel optionsPane = new JPanel();
         optionsPane.setLayout(new FlowLayout());
@@ -191,6 +205,10 @@ public class PanelPrincipal {
         JButton undoButton = new JButton("undo");
         undoButtonHandler(undoButton);
         optionsPane.add(undoButton);
+
+        JButton cancelButton = new JButton("cancel");
+        cancelButtonHandler(cancelButton);
+        optionsPane.add(cancelButton);
 
         return optionsPane;
     }

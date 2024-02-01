@@ -5,6 +5,8 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+import java.io.File;
+
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -14,9 +16,15 @@ public class SelectionPanel {
     private JFrame myFrame;
     private JPanel pPrincipal;
     private JFileChooser chooseImage;
+    private File parentFile;
 
     public SelectionPanel() { 
-        createUI(600, 400);
+        try {
+            parentFile = new File("D:\\Default\\Documentos\\img pc");
+            createUI(600, 400);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private JPanel setPrincipalContent() {
@@ -24,6 +32,7 @@ public class SelectionPanel {
         pPrincipal.setLayout(new FlowLayout());
 
         chooseImage = new JFileChooser();
+        chooseImage.setCurrentDirectory(parentFile);
         chooseImage.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
         chooseImage.addActionListener(new ActionListener() {
@@ -31,7 +40,6 @@ public class SelectionPanel {
                 int returnVal = chooseImage.showOpenDialog(myFrame);
                 if(returnVal == JFileChooser.APPROVE_OPTION) {
                     new PanelPrincipal(
-                            myFrame,
                             1920,
                             1080,
                             chooseImage.getSelectedFile().getPath()
