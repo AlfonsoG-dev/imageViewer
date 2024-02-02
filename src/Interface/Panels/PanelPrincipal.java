@@ -166,11 +166,16 @@ public class PanelPrincipal {
             }
         });
     }
-
     private void undoButtonHandler(JButton undoButton) {
         undoButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 captureRect = null;
+                pPrincipal.remove(imageLabel);
+                imageLabel = new JLabel(new ImageIcon(bufferedImage));
+                drawShape();
+                pPrincipal.add(imageLabel);
+                pPrincipal.repaint();
+                myFrame.pack();
             }
         });
     }
