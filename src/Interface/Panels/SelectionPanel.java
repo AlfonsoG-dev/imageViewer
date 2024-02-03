@@ -28,14 +28,17 @@ public class SelectionPanel extends JFileChooser {
     private void openImageViewer(String imagePath, String imageExtension) {
         switch(imageExtension) {
             case "jpg":
-            case "opng":
                 new PanelPrincipal(
                         1920,
                         1080,
                         imagePath
                         );
                 myFrame.dispose();
+            break;
+            /*
+             case "png":
                 break;
+            */
             default:
                 JOptionPane.showMessageDialog(
                         myFrame,
@@ -43,7 +46,7 @@ public class SelectionPanel extends JFileChooser {
                         "Load error",
                         JOptionPane.ERROR_MESSAGE
                 );
-                break;
+            break;
         }
     }
     @Override

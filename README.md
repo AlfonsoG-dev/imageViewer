@@ -10,7 +10,7 @@
 # Features
 - [x] make a rectangle selection using mouse.
 - [x] cut the image to the size of selection.
-- [x] currently supported only *".jpg & .png"*
+- [x] currently supported only *.jpg*
 
 # TODO'S
 >- structural TODO'S:
