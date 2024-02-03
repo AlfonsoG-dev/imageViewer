@@ -9,6 +9,7 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class SelectionPanel {
@@ -26,7 +27,27 @@ public class SelectionPanel {
             e.printStackTrace();
         }
     }
-
+    private void openImageViewer(String imagePath, String imageExtension) {
+        switch(imageExtension) {
+            case "jpg":
+            case "opng":
+                new PanelPrincipal(
+                        1920,
+                        1080,
+                        imagePath
+                        );
+                myFrame.dispose();
+                break;
+            default:
+                JOptionPane.showMessageDialog(
+                        myFrame,
+                        String.format("cannot load format [%s] for imageViewer", imageExtension),
+                        "Load error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                break;
+        }
+    }
     private JPanel setPrincipalContent() {
         pPrincipal = new JPanel();
         pPrincipal.setLayout(new FlowLayout());
@@ -35,16 +56,14 @@ public class SelectionPanel {
         chooseImage.setCurrentDirectory(parentFile);
         chooseImage.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
+        // TODO: now works but when there's an error it doen't allow to make another operation
         chooseImage.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 int returnVal = chooseImage.showOpenDialog(myFrame);
                 if(returnVal == JFileChooser.APPROVE_OPTION) {
-                    new PanelPrincipal(
-                            1920,
-                            1080,
-                            chooseImage.getSelectedFile().getPath()
-                    );
-                    myFrame.dispose();
+                    String imagePath = chooseImage.getSelectedFile().getPath();
+                    String imageExtension = new File(imagePath).getName().split("\\.")[1];
+                    openImageViewer(imagePath, imageExtension);
                 }
             }
         });
