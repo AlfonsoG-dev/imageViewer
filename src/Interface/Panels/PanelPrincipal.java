@@ -129,25 +129,14 @@ public class PanelPrincipal {
         return pPrincipal;
     }
     private BufferedImage cropImageToSelection() throws IOException {
-        BufferedImage croppedImage = null;
-        int targetWidth = 0, targetHeight = 0;
-        if(captureRect != null) {
-            targetWidth = captureRect.width;
-            targetHeight = captureRect.height;
-            croppedImage = bufferedImage.getSubimage(
-                    captureRect.x, 
-                    captureRect.y,
-                    targetWidth,
-                    targetHeight
-            );
-        } else {
-            JOptionPane.showMessageDialog(
-                    myFrame,
-                    "cannot save when nothing is selected",
-                    "Error save",
-                    JOptionPane.ERROR_MESSAGE
-            );
-        }
+        int targetWidth = captureRect.width;
+        int targetHeight = captureRect.height;
+        BufferedImage croppedImage = bufferedImage.getSubimage(
+                captureRect.x, 
+                captureRect.y,
+                targetWidth,
+                targetHeight
+        );
         return croppedImage;
     }
     private void cutButtonHandler(JButton cutButton) {
@@ -160,12 +149,21 @@ public class PanelPrincipal {
                             "Save",
                             JOptionPane.YES_NO_OPTION
                     );
-                    if(options == JOptionPane.YES_OPTION && captureRect != null) {
-                        ImageIO.write(
-                                cropImageToSelection(),
-                                "jpg",
-                                new File(".\\docs\\output.jpg")
-                        );
+                    if(options == JOptionPane.YES_OPTION) {
+                        if(captureRect != null) {
+                            ImageIO.write(
+                                    cropImageToSelection(),
+                                    "jpg",
+                                    new File(".\\docs\\output.jpg")
+                                    );
+                        } else {
+                            JOptionPane.showMessageDialog(
+                                    myFrame,
+                                    "cannot save when nothing is selected",
+                                    "Error save",
+                                    JOptionPane.ERROR_MESSAGE
+                            );
+                        }
                     }
                 } catch(Exception er) {
                     er.printStackTrace();
