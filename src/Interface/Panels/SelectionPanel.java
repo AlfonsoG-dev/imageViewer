@@ -2,8 +2,6 @@ package Interface.Panels;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 import java.io.File;
 
@@ -12,14 +10,14 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public class SelectionPanel {
+public class SelectionPanel extends JFileChooser {
 
     private JFrame myFrame;
     private JPanel pPrincipal;
-    private JFileChooser chooseImage;
     private File parentFile;
 
     public SelectionPanel() { 
+        super();
         try {
             parentFile = new File("D:\\Default\\Documentos\\img pc");
             createUI(600, 400);
@@ -48,26 +46,32 @@ public class SelectionPanel {
                 break;
         }
     }
+    @Override
+    public void cancelSelection() {
+        int option = JOptionPane.showConfirmDialog(
+                myFrame,
+                "Are you sure?",
+                "Cancel",
+                JOptionPane.YES_NO_OPTION
+        );
+        if(option == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
+    }
+    @Override
+    public void approveSelection() {
+        String imagePath = this.getSelectedFile().getPath();
+        String imageExtension = new File(imagePath).getName().split("\\.")[1];
+        openImageViewer(imagePath, imageExtension);
+    }
     private JPanel setPrincipalContent() {
         pPrincipal = new JPanel();
         pPrincipal.setLayout(new FlowLayout());
 
-        chooseImage = new JFileChooser();
-        chooseImage.setCurrentDirectory(parentFile);
-        chooseImage.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        this.setCurrentDirectory(parentFile);
+        this.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
-        // TODO: now works but when there's an error it doen't allow to make another operation
-        chooseImage.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                int returnVal = chooseImage.showOpenDialog(myFrame);
-                if(returnVal == JFileChooser.APPROVE_OPTION) {
-                    String imagePath = chooseImage.getSelectedFile().getPath();
-                    String imageExtension = new File(imagePath).getName().split("\\.")[1];
-                    openImageViewer(imagePath, imageExtension);
-                }
-            }
-        });
-        pPrincipal.add(chooseImage);
+        pPrincipal.add(this);
 
         return pPrincipal;
     }
