@@ -1,23 +1,21 @@
 package Interface.Panels;
 
+
+import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.Image;
-import java.awt.Color;
 import java.awt.Point;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
-import java.io.IOException;
 import java.io.File;
 
 import javax.imageio.ImageIO;
@@ -28,70 +26,46 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import Mundo.TreatImage;
+
 public class PanelPrincipal {
     private JFrame myFrame;
     private JPanel pPrincipal;
-    private ImageIcon myImage;
     private JLabel imageLabel;
     private Rectangle captureRect;
     private BufferedImage bufferedImage;
-    private int imageWidth, imageHeight;
     private Image origen;
     private Point start, end;
-    private String imagePath;
+    private TreatImage treatImage;
     public PanelPrincipal(int width, int height, String imageSelected) {
-        imagePath = imageSelected;
+        treatImage = new TreatImage(
+                imageSelected,
+                width,
+                height
+        );
         createUI(width, height);
     }
-    private ImageIcon loadImage() {
-        myImage = null;
-        try {
-            BufferedImage readImage = ImageIO.read(new File(imagePath));
-            imageWidth = readImage.getWidth() > myFrame.getWidth() ?
-                myFrame.getWidth()-100 : readImage.getWidth();
-
-            imageHeight = readImage.getHeight() > myFrame.getHeight() ? 
-                myFrame.getHeight()-100 : readImage.getHeight();
-
-            Image newSize = readImage.getScaledInstance(
-                    imageWidth,
-                    imageHeight,
-                    Image.SCALE_SMOOTH
-            );
-            myImage = new ImageIcon(newSize);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return myImage;
-    }
-    private void drawShape() {
-        Graphics2D g = bufferedImage.createGraphics();
-        g.drawImage(origen, 0, 0, null);
-        g.setColor(Color.RED);
-        if (captureRect == null) {
-            return;
-        }
-        g.draw(captureRect);
-        g.setColor(
-                new Color(
-                    25,
-                    25,
-                    23,
-                    10
-                )
-        );
-        g.fill(captureRect);
-        g.dispose();
+    private void setImageState() {
+        origen = treatImage.getOriginalImage();
+        bufferedImage = treatImage.getBufferedImage();
     }
     private void createMouseSelection() {
-        drawShape();
+        treatImage.drawShapeImage(
+                origen,
+                bufferedImage,
+                captureRect
+        );
         imageLabel.repaint();
 
         imageLabel.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent me) {
                 start = me.getPoint();
-                drawShape();
+                treatImage.drawShapeImage(
+                        origen,
+                        bufferedImage,
+                        captureRect
+                );
                 imageLabel.repaint();
             }
             @Override
@@ -104,40 +78,29 @@ public class PanelPrincipal {
                             end.y - start.y
                         )
                 );
-                drawShape();
+                treatImage.drawShapeImage(
+                        origen,
+                        bufferedImage,
+                        captureRect
+                );
                 imageLabel.repaint();
             }
         });
 
-    }
-    private void setImageState() {
-        origen = loadImage().getImage();
-        bufferedImage = new BufferedImage(
-                imageWidth,
-                imageHeight,
-                BufferedImage.SCALE_SMOOTH
-        );
     }
     private JPanel setPrincipalContent() {
         pPrincipal = new JPanel();
         pPrincipal.setLayout(new GridLayout(1,1));
         
         imageLabel = new JLabel(new ImageIcon(bufferedImage));
-        drawShape();
+        treatImage.drawShapeImage(
+                origen,
+                bufferedImage,
+                captureRect
+        );
         pPrincipal.add(imageLabel);
 
         return pPrincipal;
-    }
-    private BufferedImage cropImageToSelection() throws IOException {
-        int targetWidth = captureRect.width;
-        int targetHeight = captureRect.height;
-        BufferedImage croppedImage = bufferedImage.getSubimage(
-                captureRect.x, 
-                captureRect.y,
-                targetWidth,
-                targetHeight
-        );
-        return croppedImage;
     }
     private void cutButtonHandler(JButton cutButton) {
         cutButton.addActionListener(new ActionListener() {
@@ -152,10 +115,13 @@ public class PanelPrincipal {
                     if(options == JOptionPane.YES_OPTION) {
                         if(captureRect != null) {
                             ImageIO.write(
-                                    cropImageToSelection(),
+                                    treatImage.getCropImageToSelection(
+                                        captureRect,
+                                        bufferedImage
+                                    ),
                                     "jpg",
-                                    new File(".\\docs\\output.jpg")
-                                    );
+                                    new File(".\\docs\\images\\output.jpg")
+                            );
                         } else {
                             JOptionPane.showMessageDialog(
                                     myFrame,
@@ -186,7 +152,11 @@ public class PanelPrincipal {
                 captureRect = null;
                 pPrincipal.remove(imageLabel);
                 imageLabel = new JLabel(new ImageIcon(bufferedImage));
-                drawShape();
+                treatImage.drawShapeImage(
+                        origen,
+                        bufferedImage,
+                        captureRect
+                );
                 pPrincipal.add(imageLabel);
                 pPrincipal.repaint();
                 myFrame.pack();
