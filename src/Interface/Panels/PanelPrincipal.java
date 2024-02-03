@@ -48,7 +48,7 @@ public class PanelPrincipal {
         try {
             BufferedImage readImage = ImageIO.read(new File(imagePath));
             imageWidth = readImage.getWidth() > myFrame.getWidth() ?
-                myFrame.getWidth()-200 : readImage.getWidth();
+                myFrame.getWidth()-100 : readImage.getWidth();
 
             imageHeight = readImage.getHeight() > myFrame.getHeight() ? 
                 myFrame.getHeight()-100 : readImage.getHeight();
@@ -72,7 +72,14 @@ public class PanelPrincipal {
             return;
         }
         g.draw(captureRect);
-        g.setColor(new Color(25, 25, 23, 10));
+        g.setColor(
+                new Color(
+                    25,
+                    25,
+                    23,
+                    10
+                )
+        );
         g.fill(captureRect);
         g.dispose();
     }
@@ -221,6 +228,7 @@ public class PanelPrincipal {
         myFrame = new JFrame("Image Viewer");
         myFrame.setLayout(new BorderLayout());
         myFrame.setSize(width, height);
+        myFrame.setResizable(false);
 
         myFrame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
