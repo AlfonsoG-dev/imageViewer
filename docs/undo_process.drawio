@@ -1,0 +1,33 @@
+<mxfile host="Electron" modified="2024-02-03T01:59:15.057Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/23.0.2 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="kifkS5JPA9ujwMouja6r" version="23.0.2" type="device">
+  <diagram name="Página-1" id="7704JwIYsoLtMTaHYJDV">
+    <mxGraphModel dx="1408" dy="819" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="omRm1OXSFTWw64v0KKcJ-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="omRm1OXSFTWw64v0KKcJ-1" target="omRm1OXSFTWw64v0KKcJ-2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="omRm1OXSFTWw64v0KKcJ-1" value="undo" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="40" y="320" width="100" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="omRm1OXSFTWw64v0KKcJ-2" value="click" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="220" y="320" width="100" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="omRm1OXSFTWw64v0KKcJ-3" value="load image&lt;br&gt;&amp;amp;&lt;br&gt;selection" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" parent="1" vertex="1">
+          <mxGeometry x="360" y="250" width="110" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="omRm1OXSFTWw64v0KKcJ-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.44;entryY=1.017;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="omRm1OXSFTWw64v0KKcJ-2" target="omRm1OXSFTWw64v0KKcJ-3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="LowKRcwqQbMZrtGpdMO4-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="omRm1OXSFTWw64v0KKcJ-2" target="LowKRcwqQbMZrtGpdMO4-6">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="490.02" y="370.03999999999996" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LowKRcwqQbMZrtGpdMO4-6" value="don&#39;t allow to draw,&amp;nbsp;&lt;br&gt;sets the selection to null&lt;br&gt;and&amp;nbsp;&lt;br&gt;restart the image state&lt;br&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;/div&gt;" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" vertex="1" parent="1">
+          <mxGeometry x="530" y="312.5" width="210" height="115" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
