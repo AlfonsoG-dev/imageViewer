@@ -85,8 +85,16 @@ public class PanelPrincipal {
                 );
                 if(option == JOptionPane.YES_OPTION) {
                     myFrame.dispose();
-                    new SelectionPanel();
+                    new SelectionPanel(null);
                 }
+            }
+        });
+    }
+    private void loadImageButtonHandler(JButton loadImageButton) {
+        loadImageButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                myFrame.setEnabled(false);
+                new SelectionPanel(myFrame);
             }
         });
     }
@@ -105,6 +113,10 @@ public class PanelPrincipal {
         JButton undoButton = new JButton("undo");
         undoButtonHandler(undoButton);
         optionsPane.add(undoButton);
+
+        JButton loadImageButton = new JButton("loadImage");
+        loadImageButtonHandler(loadImageButton);
+        optionsPane.add(loadImageButton);
 
         JButton cancelButton = new JButton("cancel");
         cancelButtonHandler(cancelButton);

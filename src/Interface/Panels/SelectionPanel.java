@@ -13,11 +13,13 @@ import javax.swing.JPanel;
 public class SelectionPanel extends JFileChooser {
 
     private JFrame myFrame;
+    private JFrame mainFrame;
     private JPanel pPrincipal;
     private File parentFile;
 
-    public SelectionPanel() { 
+    public SelectionPanel(JFrame mainFrame) { 
         super();
+        this.mainFrame = mainFrame;
         try {
             parentFile = new File("D:\\Default\\Documentos\\img pc");
             createUI(600, 400);
@@ -65,7 +67,17 @@ public class SelectionPanel extends JFileChooser {
     public void approveSelection() {
         String imagePath = this.getSelectedFile().getPath();
         String imageExtension = imagePath.endsWith(".jpg") ? "jpg" : "";
-        openImageViewer(imagePath, imageExtension);
+        if(mainFrame == null) {
+            openImageViewer(imagePath, imageExtension);
+        } else {
+            mainFrame.dispose();
+            myFrame.dispose();
+            new PanelPrincipal(
+                1920,
+                1080,
+                imagePath
+            );
+        }
     }
     private JPanel setPrincipalContent() {
         pPrincipal = new JPanel();
