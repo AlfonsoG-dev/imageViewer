@@ -1,103 +1,36 @@
 package Interface.Panels;
 
 
-import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
-import java.awt.event.MouseMotionAdapter;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 
-import java.io.File;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import Mundo.TreatImage;
+import Interface.Utils.ImageLabelUtil;
 
 public class PanelPrincipal {
     private JFrame myFrame;
     private JPanel pPrincipal;
     private JLabel imageLabel;
-    private Rectangle captureRect;
-    private BufferedImage bufferedImage;
-    private Image origen;
-    private Point start, end;
-    private TreatImage treatImage;
+    private String imagePath;
+    private ImageLabelUtil imageLabelUtil;
     public PanelPrincipal(int width, int height, String imageSelected) {
-        treatImage = new TreatImage(
-                imageSelected,
-                width,
-                height
-        );
+        imagePath = imageSelected;
         createUI(width, height);
-    }
-    private void setImageState() {
-        origen = treatImage.getOriginalImage();
-        bufferedImage = treatImage.getBufferedImage();
-    }
-    private void createMouseSelection() {
-        treatImage.drawShapeImage(
-                origen,
-                bufferedImage,
-                captureRect
-        );
-        imageLabel.repaint();
-
-        imageLabel.addMouseMotionListener(new MouseMotionAdapter() {
-            @Override
-            public void mouseMoved(MouseEvent me) {
-                start = me.getPoint();
-                treatImage.drawShapeImage(
-                        origen,
-                        bufferedImage,
-                        captureRect
-                );
-                imageLabel.repaint();
-            }
-            @Override
-            public void mouseDragged(MouseEvent me) {
-                end = me.getPoint();
-                captureRect = new Rectangle(
-                        start,
-                        new Dimension(
-                            end.x - start.x,
-                            end.y - start.y
-                        )
-                );
-                treatImage.drawShapeImage(
-                        origen,
-                        bufferedImage,
-                        captureRect
-                );
-                imageLabel.repaint();
-            }
-        });
-
     }
     private JPanel setPrincipalContent() {
         pPrincipal = new JPanel();
         pPrincipal.setLayout(new GridLayout(1,1));
-        
-        imageLabel = new JLabel(new ImageIcon(bufferedImage));
-        treatImage.drawShapeImage(
-                origen,
-                bufferedImage,
-                captureRect
-        );
+        imageLabel = imageLabelUtil;
         pPrincipal.add(imageLabel);
 
         return pPrincipal;
@@ -113,28 +46,10 @@ public class PanelPrincipal {
                             JOptionPane.YES_NO_OPTION
                     );
                     if(options == JOptionPane.YES_OPTION) {
-                        if(captureRect != null) {
-                            ImageIO.write(
-                                    treatImage.getCropImageToSelection(
-                                        captureRect,
-                                        bufferedImage
-                                    ),
-                                    "jpg",
-                                    new File(".\\docs\\images\\output.jpg")
-                            );
-                        } else {
-                            JOptionPane.showMessageDialog(
-                                    myFrame,
-                                    "cannot save when nothing is selected",
-                                    "Error save",
-                                    JOptionPane.ERROR_MESSAGE
-                            );
-                        }
+                        imageLabelUtil.cropImage();
                     }
                 } catch(Exception er) {
                     er.printStackTrace();
-                } finally {
-                    captureRect = null;
                 }
             }
         });
@@ -142,21 +57,17 @@ public class PanelPrincipal {
     private void drawButtonHandler(JButton drawButton) {
         drawButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                createMouseSelection();
+                imageLabelUtil.createMouseSelection();
             }
         });
     }
     private void undoButtonHandler(JButton undoButton) {
         undoButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                captureRect = null;
+                imageLabelUtil = new ImageLabelUtil(imagePath, myFrame);
                 pPrincipal.remove(imageLabel);
-                imageLabel = new JLabel(new ImageIcon(bufferedImage));
-                treatImage.drawShapeImage(
-                        origen,
-                        bufferedImage,
-                        captureRect
-                );
+
+                imageLabel = imageLabelUtil;
                 pPrincipal.add(imageLabel);
                 pPrincipal.repaint();
                 myFrame.pack();
@@ -223,7 +134,10 @@ public class PanelPrincipal {
             }
         });
 
-        setImageState();
+        imageLabelUtil = new ImageLabelUtil(
+                imagePath,
+                myFrame
+        );
 
         myFrame.add(setPrincipalContent(), BorderLayout.CENTER);
         myFrame.add(setOptionsContent(), BorderLayout.SOUTH);
