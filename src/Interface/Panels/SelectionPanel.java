@@ -64,7 +64,7 @@ public class SelectionPanel extends JFileChooser {
     @Override
     public void approveSelection() {
         String imagePath = this.getSelectedFile().getPath();
-        String imageExtension = new File(imagePath).getName().split("\\.")[1];
+        String imageExtension = imagePath.endsWith(".jpg") ? "jpg" : "";
         openImageViewer(imagePath, imageExtension);
     }
     private JPanel setPrincipalContent() {

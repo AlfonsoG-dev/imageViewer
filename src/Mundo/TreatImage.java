@@ -52,8 +52,8 @@ public class TreatImage {
                 BufferedImage.SCALE_SMOOTH
         );
     }
-    public void drawShapeImage(Image origen, BufferedImage coied, Rectangle captureRectangle) {
-        Graphics2D g = coied.createGraphics();
+    public void drawShapeImage(Image origen, BufferedImage copied, Rectangle captureRectangle) {
+        Graphics2D g = copied.createGraphics();
         g.drawImage(
                 origen,
                 0,
