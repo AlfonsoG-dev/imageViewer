@@ -60,7 +60,12 @@ public class SelectionPanel extends JFileChooser {
                 JOptionPane.YES_NO_OPTION
         );
         if(option == JOptionPane.YES_OPTION) {
-            System.exit(0);
+            if(mainFrame == null) {
+                System.exit(0);
+            } else {
+                mainFrame.setEnabled(true);
+                myFrame.dispose();
+            }
         }
     }
     @Override

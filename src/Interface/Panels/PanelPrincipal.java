@@ -29,7 +29,7 @@ public class PanelPrincipal {
     }
     private JPanel setPrincipalContent() {
         pPrincipal = new JPanel();
-        pPrincipal.setLayout(new GridLayout(1,1));
+        pPrincipal.setLayout(new FlowLayout());
         imageLabel = imageLabelUtil;
         pPrincipal.add(imageLabel);
 
@@ -128,7 +128,7 @@ public class PanelPrincipal {
         myFrame = new JFrame("Image Viewer");
         myFrame.setLayout(new BorderLayout());
         myFrame.setSize(width, height);
-        myFrame.setResizable(false);
+        myFrame.setResizable(true);
 
         myFrame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
@@ -146,6 +146,19 @@ public class PanelPrincipal {
             }
         });
 
+        myFrame.addWindowStateListener(new WindowAdapter() {
+            public void windowStateChanged(WindowEvent we) {
+                pPrincipal.remove(imageLabel);
+                imageLabelUtil = new ImageLabelUtil(
+                        imagePath,
+                        myFrame
+                );
+                imageLabel = imageLabelUtil;
+                pPrincipal.add(imageLabel);
+                pPrincipal.repaint();
+            }
+        });
+
         imageLabelUtil = new ImageLabelUtil(
                 imagePath,
                 myFrame
@@ -154,7 +167,6 @@ public class PanelPrincipal {
         myFrame.add(setPrincipalContent(), BorderLayout.CENTER);
         myFrame.add(setOptionsContent(), BorderLayout.SOUTH);
 
-        myFrame.pack();
         myFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         myFrame.setVisible(true);
     }

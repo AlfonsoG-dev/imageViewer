@@ -30,8 +30,8 @@ public class ImageLabelUtil extends JLabel {
         super();
         treatImage = new TreatImage(
                 imagePath,
-                1920,
-                1080
+                mainFrame.getWidth(),
+                mainFrame.getHeight()
         );
         createLabel();
     }

@@ -18,7 +18,7 @@
 - [x] create the logic model.
 - [x] create classes model.
 >- functions and methods TODO'S:
-- [ ] re-size the image when the window or JFrame is re-sizing
+- [x] re-size the image when the window or JFrame is re-sizing
 - [x] select image from *JFileChooser*.
 - [ ] drag and drop.
 - [ ] paint on empty board.
