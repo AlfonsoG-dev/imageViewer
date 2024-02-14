@@ -31,10 +31,10 @@ public class SelectionPanel extends JFileChooser {
         switch(imageExtension) {
             case "jpg":
                 new PanelPrincipal(
-                        1920,
-                        1080,
+                        1900,
+                        1050,
                         imagePath
-                        );
+                );
                 myFrame.dispose();
             break;
             /*
@@ -78,8 +78,8 @@ public class SelectionPanel extends JFileChooser {
             mainFrame.dispose();
             myFrame.dispose();
             new PanelPrincipal(
-                1920,
-                1080,
+                1900,
+                1050,
                 imagePath
             );
         }

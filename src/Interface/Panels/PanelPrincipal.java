@@ -8,6 +8,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
+import java.awt.Dimension;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -71,6 +72,12 @@ public class PanelPrincipal {
                 pPrincipal.add(imageLabel);
                 pPrincipal.repaint();
                 myFrame.pack();
+                myFrame.setSize(
+                        new Dimension(
+                            1900,
+                            1050
+                        )
+                );
             }
         });
     }
@@ -127,7 +134,12 @@ public class PanelPrincipal {
     public void createUI(int width, int height) {
         myFrame = new JFrame("Image Viewer");
         myFrame.setLayout(new BorderLayout());
-        myFrame.setSize(width, height);
+        myFrame.setSize(
+                new Dimension(
+                    width,
+                    height
+                )
+        );
         myFrame.setResizable(true);
 
         myFrame.addWindowListener(new WindowAdapter() {
