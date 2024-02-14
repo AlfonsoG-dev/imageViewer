@@ -1,8 +1,13 @@
 # Image viewer
 - GUI APP for simple edition operations for images in java.
-- created using java *swing* and *awt*
+- created using java *swing* and *awt*.
+>- this project uses [javaBuild](https://github.com/AlfonsoG-dev/javaBuild) as build tool.
 
 # Dependencies
+- [java_jdk_17.0.8](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
+- [java_build_tool](https://github.com/AlfonsoG-dev/javaBuild)
+
+# References
 - [mouse_drawing](http://www.java2s.com/Tutorials/Java/Graphics_How_to/Screen/Screen_shoot_capture_and_select_an_area_to_cut_with_mouse.htm)
 - [cropping_an_image](https://copyprogramming.com/howto/how-do-i-crop-an-image-in-java)
 - [automatic_scaling_images](https://www.codejava.net/java-se/graphics/drawing-an-image-with-automatic-scaling)
