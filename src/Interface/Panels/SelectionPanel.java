@@ -2,6 +2,8 @@ package Interface.Panels;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import java.io.File;
 
@@ -10,6 +12,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+
+@SuppressWarnings({"serial"})
 public class SelectionPanel extends JFileChooser {
 
     private JFrame myFrame;
@@ -99,6 +103,26 @@ public class SelectionPanel extends JFileChooser {
         myFrame = new JFrame();
         myFrame.setLayout(new BorderLayout());
         myFrame.setSize(width, height);
+
+        myFrame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+                int option = JOptionPane.showConfirmDialog(
+                        myFrame,
+                        "Are you sure?",
+                        "Closing",
+                        JOptionPane.YES_NO_OPTION
+                );
+                if(option == JOptionPane.NO_OPTION) {
+                    myFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                }
+                if(option == JOptionPane.YES_OPTION && mainFrame == null) {
+                    System.exit(0);
+                } else if(option == JOptionPane.YES_OPTION && mainFrame != null) {
+                    mainFrame.setEnabled(true);
+                    myFrame.dispose();
+                }
+            }
+        });
 
         myFrame.add(setPrincipalContent());
 

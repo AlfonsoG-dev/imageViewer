@@ -10,6 +10,7 @@
 # Features
 - [x] make a rectangle selection using mouse.
 - [x] cut the image to the size of selection.
+- [x] support drag and drop.
 - [x] currently supported only *.jpg*
 
 # TODO'S
@@ -20,7 +21,6 @@
 >- functions and methods TODO'S:
 - [x] re-size the image when the window or JFrame is re-sizing
 - [x] select image from *JFileChooser*.
-- [ ] drag and drop.
 - [ ] paint on empty board.
 - [ ] paint to the image using mouse.
 - [ ] select a brush, set its thickness and color.

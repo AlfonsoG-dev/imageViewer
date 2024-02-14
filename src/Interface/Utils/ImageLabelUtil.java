@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 
 import Mundo.TreatImage;
 
+@SuppressWarnings({"serial"})
 public class ImageLabelUtil extends JLabel {
 
     public TreatImage treatImage;

@@ -6,18 +6,29 @@ import java.awt.event.WindowEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import java.awt.datatransfer.DataFlavor;
 import java.awt.FlowLayout;
+import java.awt.datatransfer.Transferable;
 import java.awt.Dimension;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetAdapter;
+
+import java.util.List;
+
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.TransferHandler;
 
 import Interface.Utils.ImageLabelUtil;
 
+@SuppressWarnings({"unchecked"})
 public class PanelPrincipal {
     private JFrame myFrame;
     private JPanel pPrincipal;
@@ -28,10 +39,68 @@ public class PanelPrincipal {
         imagePath = imageSelected;
         createUI(width, height);
     }
+    public void enableImageDrop() {
+        imageLabel.setTransferHandler(new TransferHandler(){
+            @Override
+            public boolean canImport(TransferSupport support) {
+                return support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
+            }
+            @Override
+            public boolean importData(TransferSupport support) {
+                myFrame.dispose();
+                if(!canImport(support)) {
+                    return false;
+                }
+                Transferable transferable = support.getTransferable();
+                try{
+                    List<File> fileList = (List<File>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
+                    if(fileList.size() > 0) {
+                        File file = fileList.get(0);
+                        new PanelPrincipal(
+                                1900,
+                                1050,
+                                file.getPath()
+                        );
+                        return true;
+                    }
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+                return false;
+            }
+        });
+
+        imageLabel.setDropTarget(new DropTarget(imageLabel, new DropTargetAdapter() {
+            @Override
+            public void drop(DropTargetDropEvent de) {
+                myFrame.dispose();
+                de.acceptDrop(DnDConstants.ACTION_COPY);
+                Transferable t = de.getTransferable();
+
+                if(t.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+                    de.acceptDrop(DnDConstants.ACTION_COPY);
+                    try {
+                        List<File> fileList = (List<File>) t.getTransferData(DataFlavor.javaFileListFlavor);
+                        if(fileList.size() > 0) {
+                            File file = fileList.get(0);
+                            new PanelPrincipal(
+                                    1900,
+                                    1050,
+                                    file.getPath()
+                            );
+                        }
+                    } catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }));
+    }
     private JPanel setPrincipalContent() {
         pPrincipal = new JPanel();
         pPrincipal.setLayout(new FlowLayout());
         imageLabel = imageLabelUtil;
+        enableImageDrop();
         pPrincipal.add(imageLabel);
 
         return pPrincipal;
@@ -148,7 +217,7 @@ public class PanelPrincipal {
                         myFrame,
                         "Are you sure?",
                         "Closing",
-                        JOptionPane.YES_OPTION
+                        JOptionPane.YES_NO_OPTION
                 );
                 if(option == JOptionPane.YES_OPTION) {
                     System.exit(0);
