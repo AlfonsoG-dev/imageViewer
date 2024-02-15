@@ -84,6 +84,26 @@ public class TreatImage {
         g.fill(captureRectangle);
         g.dispose();
     }
+    public void drawPaintBoard(Image origen, BufferedImage base) {
+        Graphics2D g = base.createGraphics();
+        g.drawImage(
+                origen,
+                0,
+                0,
+                Color.GRAY,
+                null
+        );
+        g.setColor(Color.GRAY);
+        Rectangle r = new Rectangle(
+                imageWidth,
+                imageHeight
+        );
+        g.draw(r);
+
+        g.setColor(Color.GRAY);
+        g.fill(r);
+        g.dispose();
+    }
     public BufferedImage getCropImageToSelection(Rectangle captureRectangle, BufferedImage copied) {
         int targetWidth = captureRectangle.width;
         int targetHeight = captureRectangle.height;
