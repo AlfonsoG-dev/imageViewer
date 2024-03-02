@@ -29,7 +29,6 @@
 - [ ] paint on empty board.
 - [ ] paint to the image using mouse.
 - [ ] select a brush, set its thickness and color.
-- [ ] add hot reload implementation
 
 # Disclaimer
 - this project is for educational purposes.
