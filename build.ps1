@@ -1,5 +1,7 @@
-$compile = "javac -Xlint:all -d .\bin\ .\src\*.java .\src\Interface\Panels\*.java .\src\Interface\Utils\*.java .\src\Mundo\*.java "
-$createJar = "jar -cfm imageViewer.jar Manifesto.txt -C .\bin\ ."
-$javaCommand = "java -jar imageViewer.jar"
+$srcClasses = "src\application\*.java src\application\client\panels\*.java src\application\client\utils\*.java src\application\mundo\*.java "
+$libFiles = ""
+$compile = "javac --release 23 -Xlint:all -Xdiags:verbose -d .\bin\ $srcClasses"
+$createJar = "jar -cfm ImageViewer.jar Manifesto.txt -C .\bin\ ."
+$javaCommand = "java -jar ImageViewer.jar"
 $runCommand = "$compile" + " && " + "$createJar" + " && " +"$javaCommand"
-Invoke-Expression $runCommand
+Invoke-Expression $runCommand 
