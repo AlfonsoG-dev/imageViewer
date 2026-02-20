@@ -5,7 +5,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  */
-package Interface.Utils;
+package application.client.utils;
 
 import java.awt.image.BufferedImage;
 import java.awt.Image;
@@ -32,18 +32,19 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.TransferHandler;
 
-import Mundo.TreatImage;
-import Interface.Panels.PanelPrincipal;
+import application.mundo.TreatImage;
+import application.client.panels.PanelPrincipal;
 
 @SuppressWarnings({"serial", "unchecked"})
 public class ImageLabelUtil extends JLabel {
 
-    public TreatImage treatImage;
-    private BufferedImage bufferedImage;
+    private transient TreatImage treatImage;
+    private transient BufferedImage bufferedImage;
     private JFrame mainFrame;
-    private Image origen;
-    private Point start, end;
-    public Rectangle captureRect;
+    private transient Image origen;
+    private Point start;
+    private Point end;
+    private Rectangle captureRect;
     
     public ImageLabelUtil(String imagePath, JFrame mainFrame) {
         super();
@@ -54,10 +55,6 @@ public class ImageLabelUtil extends JLabel {
                 mainFrame.getHeight()
         );
         createLabel();
-    }
-    private void setImageState() {
-        origen = treatImage.getOriginalImage();
-        bufferedImage = treatImage.getBufferedImage();
     }
     public void cropImage() {
         try {
@@ -122,6 +119,20 @@ public class ImageLabelUtil extends JLabel {
         });
 
     }
+    public void createLabel() {
+        setImageState();
+        this.setIcon(new ImageIcon(bufferedImage));
+        treatImage.drawShapeImage(
+                origen,
+                bufferedImage,
+                captureRect
+        );
+        enableImageDrop();
+    }
+    private void setImageState() {
+        origen = treatImage.getOriginalImage();
+        bufferedImage = treatImage.getBufferedImage();
+    }
     private void enableImageDrop() {
         this.setTransferHandler(new TransferHandler(){
             @Override
@@ -137,7 +148,7 @@ public class ImageLabelUtil extends JLabel {
                 Transferable transferable = support.getTransferable();
                 try{
                     List<File> fileList = (List<File>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
-                    if(fileList.size() > 0) {
+                    if(!fileList.isEmpty()) {
                         File file = fileList.get(0);
                         new PanelPrincipal(
                                 1900,
@@ -164,7 +175,7 @@ public class ImageLabelUtil extends JLabel {
                     de.acceptDrop(DnDConstants.ACTION_COPY);
                     try {
                         List<File> fileList = (List<File>) t.getTransferData(DataFlavor.javaFileListFlavor);
-                        if(fileList.size() > 0) {
+                        if(!fileList.isEmpty()) {
                             File file = fileList.get(0);
                             new PanelPrincipal(
                                     1900,
@@ -178,15 +189,5 @@ public class ImageLabelUtil extends JLabel {
                 }
             }
         }));
-    }
-    public void createLabel() {
-        setImageState();
-        this.setIcon(new ImageIcon(bufferedImage));
-        treatImage.drawShapeImage(
-                origen,
-                bufferedImage,
-                captureRect
-        );
-        enableImageDrop();
     }
 }

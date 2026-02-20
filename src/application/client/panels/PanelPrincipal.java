@@ -5,12 +5,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  */
-package Interface.Panels;
+package application.client.panels;
 
 
-import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -21,8 +19,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
-import Interface.Utils.ImageLabelUtil;
+import application.client.utils.ImageLabelUtil;
 
 public class PanelPrincipal {
     private JFrame myFrame;
@@ -43,75 +42,63 @@ public class PanelPrincipal {
         return pPrincipal;
     }
     private void cutButtonHandler(JButton cutButton) {
-        cutButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    int options = JOptionPane.showConfirmDialog(
-                            myFrame,
-                            "Save the image?",
-                            "Save",
-                            JOptionPane.YES_NO_OPTION
-                    );
-                    if(options == JOptionPane.YES_OPTION) {
-                        imageLabelUtil.cropImage();
-                    }
-                } catch(Exception er) {
-                    er.printStackTrace();
+        cutButton.addActionListener(e -> {
+            try {
+                int options = JOptionPane.showConfirmDialog(
+                        myFrame,
+                        "Save the image?",
+                        "Save",
+                        JOptionPane.YES_NO_OPTION
+                );
+                if(options == JOptionPane.YES_OPTION) {
+                    imageLabelUtil.cropImage();
                 }
+            } catch(Exception er) {
+                er.printStackTrace();
             }
         });
     }
     private void drawButtonHandler(JButton drawButton) {
-        drawButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                imageLabelUtil.createMouseSelection();
-            }
-        });
+        drawButton.addActionListener(e -> imageLabelUtil.createMouseSelection());
     }
     private void undoButtonHandler(JButton undoButton) {
-        undoButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                imageLabelUtil = new ImageLabelUtil(
-                        imagePath,
-                        myFrame
-                );
-                pPrincipal.remove(imageLabel);
+        undoButton.addActionListener(e -> {
+            imageLabelUtil = new ImageLabelUtil(
+                    imagePath,
+                    myFrame
+            );
+            pPrincipal.remove(imageLabel);
 
-                imageLabel = imageLabelUtil;
-                pPrincipal.add(imageLabel);
-                pPrincipal.repaint();
-                myFrame.pack();
-                myFrame.setSize(
-                        new Dimension(
-                            1900,
-                            1050
-                        )
-                );
-            }
+            imageLabel = imageLabelUtil;
+            pPrincipal.add(imageLabel);
+            pPrincipal.repaint();
+            myFrame.pack();
+            myFrame.setSize(
+                    new Dimension(
+                        1900,
+                        1050
+                    )
+            );
         });
     }
     private void cancelButtonHandler(JButton cancelButton) {
-        cancelButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                int option = JOptionPane.showConfirmDialog(
-                        myFrame, 
-                        "Are you sure?",
-                        "Cancel",
-                        JOptionPane.YES_OPTION
-                );
-                if(option == JOptionPane.YES_OPTION) {
-                    myFrame.dispose();
-                    new SelectionPanel(null);
-                }
+        cancelButton.addActionListener(e -> {
+            int option = JOptionPane.showConfirmDialog(
+                    myFrame, 
+                    "Are you sure?",
+                    "Cancel",
+                    JOptionPane.YES_OPTION
+            );
+            if(option == JOptionPane.YES_OPTION) {
+                myFrame.dispose();
+                new SelectionPanel(null);
             }
         });
     }
     private void loadImageButtonHandler(JButton loadImageButton) {
-        loadImageButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                myFrame.setEnabled(false);
-                new SelectionPanel(myFrame);
-            }
+        loadImageButton.addActionListener(e -> {
+            myFrame.setEnabled(false);
+            new SelectionPanel(myFrame);
         });
     }
     private JPanel setOptionsContent() {
@@ -152,6 +139,7 @@ public class PanelPrincipal {
         myFrame.setResizable(true);
 
         myFrame.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent we) {
                 int option = JOptionPane.showConfirmDialog(
                         myFrame,
@@ -162,12 +150,13 @@ public class PanelPrincipal {
                 if(option == JOptionPane.YES_OPTION) {
                     System.exit(0);
                 } else {
-                    myFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                    myFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
                 }
             }
         });
 
         myFrame.addWindowStateListener(new WindowAdapter() {
+            @Override
             public void windowStateChanged(WindowEvent we) {
                 pPrincipal.remove(imageLabel);
                 imageLabelUtil = new ImageLabelUtil(
@@ -188,7 +177,7 @@ public class PanelPrincipal {
         myFrame.add(setPrincipalContent(), BorderLayout.CENTER);
         myFrame.add(setOptionsContent(), BorderLayout.SOUTH);
 
-        myFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        myFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         myFrame.setVisible(true);
     }
 }

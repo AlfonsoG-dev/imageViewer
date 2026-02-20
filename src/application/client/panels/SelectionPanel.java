@@ -5,7 +5,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  */
-package Interface.Panels;
+package application.client.panels;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -14,6 +14,7 @@ import java.awt.event.WindowEvent;
 
 import java.io.File;
 
+import javax.swing.WindowConstants;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -23,43 +24,36 @@ import javax.swing.JPanel;
 @SuppressWarnings({"serial"})
 public class SelectionPanel extends JFileChooser {
 
+    private static final String FILE_IMAGES_PATH = "D:\\Descargas\\archivos\\imagenes";
     private JFrame myFrame;
     private JFrame mainFrame;
-    private JPanel pPrincipal;
     private File parentFile;
 
     public SelectionPanel(JFrame mainFrame) { 
         super();
         this.mainFrame = mainFrame;
         try {
-            parentFile = new File("D:\\Default\\Documentos\\img pc");
+            parentFile = new File(FILE_IMAGES_PATH);
             createUI(600, 400);
         } catch(Exception e) {
             e.printStackTrace();
         }
     }
     private void openImageViewer(String imagePath, String imageExtension) {
-        switch(imageExtension) {
-            case "jpg":
+        if (imageExtension.equals("jpg")) {
                 new PanelPrincipal(
                         1900,
                         1050,
                         imagePath
                 );
                 myFrame.dispose();
-            break;
-            /*
-             case "png":
-                break;
-            */
-            default:
+        } else {
                 JOptionPane.showMessageDialog(
                         myFrame,
-                        String.format("cannot load format [%s] for imageViewer", imageExtension),
+                        String.format("cannot load format [%s] for ImageViewer", imageExtension),
                         "Load error",
                         JOptionPane.ERROR_MESSAGE
                 );
-            break;
         }
     }
     @Override
@@ -96,7 +90,7 @@ public class SelectionPanel extends JFileChooser {
         }
     }
     private JPanel setPrincipalContent() {
-        pPrincipal = new JPanel();
+        JPanel pPrincipal = new JPanel();
         pPrincipal.setLayout(new FlowLayout());
 
         this.setCurrentDirectory(parentFile);
@@ -112,6 +106,7 @@ public class SelectionPanel extends JFileChooser {
         myFrame.setSize(width, height);
 
         myFrame.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent we) {
                 int option = JOptionPane.showConfirmDialog(
                         myFrame,
@@ -120,11 +115,11 @@ public class SelectionPanel extends JFileChooser {
                         JOptionPane.YES_NO_OPTION
                 );
                 if(option == JOptionPane.NO_OPTION) {
-                    myFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                    myFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
                 }
                 if(option == JOptionPane.YES_OPTION && mainFrame == null) {
                     System.exit(0);
-                } else if(option == JOptionPane.YES_OPTION && mainFrame != null) {
+                } else if(option == JOptionPane.YES_OPTION) {
                     mainFrame.setEnabled(true);
                     myFrame.dispose();
                 }
@@ -133,7 +128,7 @@ public class SelectionPanel extends JFileChooser {
 
         myFrame.add(setPrincipalContent());
 
-        myFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        myFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         myFrame.setVisible(true);
     }
 }

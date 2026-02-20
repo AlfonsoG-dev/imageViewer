@@ -5,9 +5,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  */
-import Interface.Panels.SelectionPanel;
+package application;
+import application.client.panels.SelectionPanel;
 
-class imageViewer {
+class ImageViewer {
     public static void main(String[] args) {
         new SelectionPanel(null);
     }

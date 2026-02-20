@@ -5,7 +5,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  */
-package Mundo;
+package application.mundo;
 
 import java.awt.image.BufferedImage;
 import java.awt.Image;
@@ -20,8 +20,10 @@ import java.io.File;
 
 public class TreatImage {
     private String imagePath;
-    private int imageWidth, imageHeight;
-    private int frameWidth, frameHeight;
+    private int imageWidth;
+    private int imageHeight;
+    private int frameWidth;
+    private int frameHeight;
 
     public TreatImage(String imagePath, int frameWidth, int frameHeight) {
         this.imagePath = imagePath;
@@ -56,7 +58,7 @@ public class TreatImage {
         return new BufferedImage(
                 imageWidth,
                 imageHeight,
-                BufferedImage.SCALE_SMOOTH
+                Image.SCALE_SMOOTH
         );
     }
     public void drawShapeImage(Image origen, BufferedImage copied, Rectangle captureRectangle) {
@@ -99,12 +101,11 @@ public class TreatImage {
     public BufferedImage getCropImageToSelection(Rectangle captureRectangle, BufferedImage copied) {
         int targetWidth = captureRectangle.width;
         int targetHeight = captureRectangle.height;
-        BufferedImage croppedImage = copied.getSubimage(
+        return copied.getSubimage(
                 captureRectangle.x,
                 captureRectangle.y,
                 targetWidth,
                 targetHeight
         );
-        return croppedImage;
     }
 }
